@@ -12,8 +12,4 @@ def start(message):
     bot.send_message(message.chat.id, conf.textStart)
 
 
-
-
-
-
 bot.polling(none_stop=True)
