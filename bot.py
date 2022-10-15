@@ -1,5 +1,6 @@
 import telebot
 import re
+from telebot import types
 
 import configuration as conf
 import scraping.ria_news as ria_news
@@ -16,8 +17,16 @@ def start(message):
 
 @bot.message_handler(commands=['from_source'])
 def from_source(message):
-    for i in range(1, amt_news):
-        bot.send_message(message.chat.id, ria_news.scraping_news(i))
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    button_rianews = types.KeyboardButton("РИА")
+    markup.add(button_rianews)
+    bot.send_message(message.chat.id, conf.testSourse, reply_markup=markup)
+
+    @bot.message_handler(content_types=['text'])
+    def output_news(message):
+        if message.text == 'РИА':
+            for i in range(1, amt_news):
+                bot.send_message(message.chat.id, ria_news.scraping_news(i), reply_markup=types.ReplyKeyboardRemove())
 
 
 @bot.message_handler(commands=['update_n'])
