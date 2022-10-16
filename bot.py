@@ -5,12 +5,14 @@ from telebot import types
 import configuration as conf
 import scraping.ria_news as ria_news
 import scraping.rbk as rbk
+import scraping.kommersant as kommersant
 
 amt_news = conf.amt_news + 1
 
 bot = telebot.TeleBot(conf.botToken)
 button_rianews = types.KeyboardButton('РИА')
 button_rbc = types.KeyboardButton('РБК')
+button_kommersant = types.KeyboardButton('Ъ')
 
 
 @bot.message_handler(commands=['start'])
@@ -21,7 +23,7 @@ def start(message):
 @bot.message_handler(commands=['from_source'])
 def from_source(message):
     markup_source = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup_source.add(button_rianews, button_rbc)
+    markup_source.add(button_rianews, button_rbc, button_kommersant)
     message_source = bot.send_message(message.chat.id, conf.testSourse, reply_markup=markup_source)
     bot.register_next_step_handler(message_source, output_news)
 
@@ -33,6 +35,9 @@ def output_news(message):
     if message.text == 'РБК':
         for i in range(1, amt_news):
             bot.send_message(message.chat.id, rbk.scraping_news(i), reply_markup=types.ReplyKeyboardRemove())
+    if message.text == 'Ъ':
+        for i in range(1, amt_news):
+            bot.send_message(message.chat.id, kommersant.scraping_news(i), reply_markup=types.ReplyKeyboardRemove())
 
 
 @bot.message_handler(commands=['update_n'])
@@ -57,7 +62,7 @@ def update_amt(message):
 @bot.message_handler(commands=['subscribe'])
 def from_source(message):
     markup_subscribe = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup_subscribe.add(button_rianews)
+    markup_subscribe.add(button_rianews, button_rbc, button_kommersant)
     message_subscribe = bot.send_message(message.chat.id, conf.testSubscribe, reply_markup=markup_subscribe)
     bot.register_next_step_handler(message_subscribe, sub_news)
 
@@ -66,6 +71,8 @@ def sub_news(message):
     if message.text == 'РИА':
         bot.send_message(message.chat.id, conf.testSubscribeDone)
     if message.text == 'РБК':
+        bot.send_message(message.chat.id, conf.testSubscribeDone)
+    if message.text == 'Ъ':
         bot.send_message(message.chat.id, conf.testSubscribeDone)
 
 
