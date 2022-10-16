@@ -4,11 +4,13 @@ from telebot import types
 
 import configuration as conf
 import scraping.ria_news as ria_news
+import scraping.rbk as rbk
 
 amt_news = conf.amt_news + 1
 
 bot = telebot.TeleBot(conf.botToken)
-button_rianews = types.KeyboardButton("РИА")
+button_rianews = types.KeyboardButton('РИА')
+button_rbc = types.KeyboardButton('РБК')
 
 
 @bot.message_handler(commands=['start'])
@@ -19,7 +21,7 @@ def start(message):
 @bot.message_handler(commands=['from_source'])
 def from_source(message):
     markup_source = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup_source.add(button_rianews)
+    markup_source.add(button_rianews, button_rbc)
     message_source = bot.send_message(message.chat.id, conf.testSourse, reply_markup=markup_source)
     bot.register_next_step_handler(message_source, output_news)
 
@@ -28,6 +30,9 @@ def output_news(message):
     if message.text == 'РИА':
         for i in range(1, amt_news):
             bot.send_message(message.chat.id, ria_news.scraping_news(i), reply_markup=types.ReplyKeyboardRemove())
+    if message.text == 'РБК':
+        for i in range(1, amt_news):
+            bot.send_message(message.chat.id, rbk.scraping_news(i), reply_markup=types.ReplyKeyboardRemove())
 
 
 @bot.message_handler(commands=['update_n'])
@@ -37,11 +42,11 @@ def from_source(message):
 
 
 def update_amt(message):
-    if re.findall(r'\d[0-9]', message.text):
+    if re.findall(r'[0-9]', message.text):
         if int(message.text) <= 20:
             bot.send_message(message.chat.id, conf.textPassUpdate)
             global amt_news
-            amt_news = int(message.text)
+            amt_news = int(message.text) + 1
             return amt_news
         else:
             bot.send_message(message.chat.id, conf.textErrorUpdate)
@@ -59,6 +64,8 @@ def from_source(message):
 
 def sub_news(message):
     if message.text == 'РИА':
+        bot.send_message(message.chat.id, conf.testSubscribeDone)
+    if message.text == 'РБК':
         bot.send_message(message.chat.id, conf.testSubscribeDone)
 
 

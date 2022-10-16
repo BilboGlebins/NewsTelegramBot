@@ -8,6 +8,7 @@ headers = {"User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9
 
 #URL новостных сайтов
 urlRIA = 'https://ria.ru/lenta'
+urlRBC = 'https://www.rbc.ru/short_news'
 
 #Число для вывода новостей по умолчанию
 amt_news = 5
