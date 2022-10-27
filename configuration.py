@@ -3,6 +3,14 @@ from decouple import config
 #Токен бота
 botToken = config('token', default='')
 
+#Данные для связи с БД
+name_db = config('database', default='')
+user_db = config('user', default='')
+password_db = config('password', default='')
+host_db = config('host', default='')
+
+
+
 #Заголовок, который браузеры отправляют в запросах на идентификацию
 headers = {"User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5(.NET CLR 3.5.30729)"}
 
@@ -10,6 +18,7 @@ headers = {"User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9
 urlRIA = 'https://ria.ru/lenta'
 urlRBC = 'https://www.rbc.ru/short_news'
 urlKommersant = 'https://www.kommersant.ru/lenta'
+urlSportru = 'https://www.sports.ru/news/'
 
 #Число для вывода новостей по умолчанию
 amt_news = 5
@@ -27,7 +36,7 @@ textStart = '''Здравствуйте!
 testSourse = '''Выберите источник'''
 
 textUpdate = '''Данная функция изменяет количество отображаемых новостей.
-(по умолчанию 5, не более 20)
+(по умолчанию 5, не более 10)
 Введите число отображаемых новостей: '''
 
 textPassUpdate = '''Значение изменено'''

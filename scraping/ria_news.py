@@ -9,7 +9,6 @@ soup = BeautifulSoup(html_text, 'lxml')
 data = soup.find_all('div', class_='list-item')
 news_repository = {}
 
-
 def scraping_news(buff_number):
     id = 0
     for enum_data in data:
